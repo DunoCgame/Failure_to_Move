@@ -1,0 +1,281 @@
+<!Doctype HTML>
+<HTML  lang="es">
+<Head>
+<title>Failure  to  Move</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+</Head>
+<style>
+	#canvas{
+			background: white;
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			width: 100%;
+			height: 100%;
+	}
+</style>
+<body id="body">
+	<center>
+		<Canvas id='canvas'></Canvas>
+	</center>
+	
+<audio id='SonidoFondo1' src="audio/SonidoJuego.mp3" loop></audio>
+<audio id='SonidoFondo2' src="audio/SonidoJuego.mp3" loop></audio>
+<audio id='SonidoJuego' src="audio/MelodiadeFondo.mp3" loop></audio>
+<audio id='SonidoMenu'      src="audio/Movimiento.mp3" ></audio>
+<audio id='SonidoPausa'      src="audio/SonidoPause.mp3" ></audio>
+<audio id='SonidoMov'      src="audio/Movimiento.mp3" ></audio>
+<audio id='SonidoColi'      src="audio/SonidoColision.mp3" ></audio>
+<audio id='SonidoPuntos'      src="audio/SonidoPuntos.mp3" ></audio>
+
+<audio id='SonidoSelect'      src="audio/SonidoSelect.mp3" ></audio>
+<audio id='SonidoGameover'      src="audio/SonidoGameOver.mp3" ></audio>
+
+
+</body >
+	<script language="javascript" src="Variables.js"></script>
+	<script language="javascript" src="Nucleo/Sistema_de_colisiones.js"></script>
+	<script language="javascript" src="Nucleo/ControldeTiempo.js"></script>
+	<script language="javascript" src="Nucleo/debut.js"></script>
+	<script language="javascript" src="Nucleo/Sonido.js"></script>
+
+	<script language="javascript" src="FondoPortada.js"></script>
+	
+	<script language="javascript" src="Portada.js"></script>
+	<script language="javascript" src="Juego.js"></script>
+	<script language="javascript" src="Fondo_de_Juego.js"></script>
+	<script language="javascript" src="Colision_Pesonaje_Barras.js"></script>
+
+	<script language="javascript" src="GameOver.js"></script>
+	
+	
+	<script language="javascript" src="Guardado_Puntaje/Crear_Carpeta_Puntaje.js"></script>
+	<script language="javascript" src="Guardado_Puntaje/Crear_Archivo_Puntaje.js"></script>
+	<script language="javascript" src="Guardado_Puntaje/Lectura_de_Puntaje.js"></script>
+	<script language="javascript" src="Guardado_Puntaje/Actualizar_Datos_Puntajes.js"></script>
+	<script language="javascript" src="Guardado_Puntaje/Borrar_Puntuacion.js"></script>
+
+	
+	
+	
+	<script language="javascript" src="Calculo_de_resultadoGameOver.js"></script>
+	<script language="javascript" src="Ingrese_NombreGameOver.js"></script>
+	<script language="javascript" src="PerdisteGameOver.js"></script>
+
+	<script language="javascript" src="Interfas.js"></script>
+
+	<script language="javascript" src="FondoOpciones.js"></script>
+	<script language="javascript" src="Opciones.js"></script>
+	<script language="javascript" src="OpcionesText.js"></script>
+
+	<script language="javascript" src="TriunfoTotal.js"></script>
+	<script language="javascript" src="Calculo_de_resultadoTriunfoTotal.js"></script>
+	<script language="javascript" src="Ingrese_NombreTriunfoTotal.js"></script>
+	<script language="javascript" src="PerdisteTriunfoTotal.js"></script>
+
+	<script language="javascript" src="FondoPosiciones.js"></script>
+	<script language="javascript" src="Posiciones.js"></script>
+
+
+	<script language="javascript" src="Reinicios.js"></script>
+
+
+	
+	
+
+
+<script>
+var AT=false;
+document.addEventListener("onload", function(){  Sonido(true,"SonidoFondo1");    }  );
+document.addEventListener("onload", Crear_Carpeta_Puntaje()  );
+document.addEventListener("onload", setTimeout(Crear_Archivos_Puntaje(), AT=true,4000) );
+
+
+
+
+function Leectura(){
+if(AT==true){
+if(typeof lectura_loop !="undefined"){ 	clearInterval(lectura_loop); 	}
+lectura_loop=setInterval(Leer_Archivos,1000);
+}
+}
+Leectura();
+
+
+
+(function Main(){
+document.addEventListener("resize", Main);
+s = getComputedStyle(canvas);
+w = s.width;
+h = s.height;
+			 
+W = canvas.width = w.split("px")[0];
+H = canvas.height = h.split("px")[0];
+X = Math.floor(W/2);
+Y = Math.floor(H/2);
+r = Math.floor(W/3);
+
+
+
+/*AREA DE ESCENAS*/	
+EventosTeclado();
+Posicion_del_Mause();
+    
+
+switch (Escena) {
+
+	case 1:	
+Sonido(true,"SonidoFondo1");
+	
+Sonido(false,"SonidoJuego");
+Sonido(false,"SonidoPausa");
+Sonido(false,"SonidoFondo2");
+Sonido(false,"SonidoGameover");
+
+	
+		Fondo_Portada();
+		Fondo_PortadaBarras();
+		///
+		Portada();
+		///
+		<!-- pintarcursos(); -->
+		EstadoReinicio=false; 
+		
+
+	break;
+
+	case 2:
+if(Pause==true ){
+		Sonido(false,"SonidoJuego");
+		Sonido(false,"SonidoFondo1");
+		Sonido(false,"SonidoFondo2");
+		}
+		else
+			 if(Pause==false && Gameover==false && IngresNombre==false && Podio==false ){
+					Sonido(true,"SonidoJuego");
+					Sonido(false,"SonidoPausa");
+					Sonido(false,"SonidoFondo1");	
+					Sonido(false,"SonidoFondo2");	
+						}
+	
+		JuegoFondo();
+		Contadore_Reinicio_BARRAS();
+		
+		if(Victoria==false){
+			 
+					if(Gameover==false && IngresNombre==false && Podio==false){ 
+						Jugador();
+						Colisiones_Barras_Personaje();
+						Interfas();
+						cronometro();
+						Pausa();
+					}
+					
+						
+
+					if(Gameover==true){
+							
+						GameOver();
+					}
+
+					if(IngresNombre==true){
+					
+						Gameover=false;
+						Ingreso_de_Texto();		
+					}
+					if(Podio==true){
+					
+						IngresNombre=false;
+						Gameover=false;
+						Perdiste();
+						Resultados();
+					//recibe los datos de ingrese nombre
+					}
+					
+					if(Gameover==true || IngresNombre==true || Podio==true){
+					
+							Sonido(true,"SonidoGameover");
+							Sonido(false,"SonidoJuego");
+							Sonido(false,"SonidoPausa");
+							Sonido(false,"SonidoFondo1");	
+													
+								}							
+
+										}
+
+	break;
+
+	case 3:
+Sonido(false,"SonidoFondo1");
+	Sonido(true,"SonidoFondo2");
+		Fondo_OpcionesBarras();
+		Opciones();
+		OpcionesText();
+
+	break;
+
+	case 4:
+	Sonido(true,"SonidoJuego");
+	Sonido(true,"SonidoFondo2");
+	
+		JuegoFondo();
+		Triunfo_Final();
+		/*FUNCION DE GUARDADO DE DATOS*/
+				if(IngresNombre==true){
+				Victoria=false;
+						Ingreso_de_Texto_Triunfo_Total();					
+						}
+						if(Podio==true){
+							IngresNombre=false;
+							Perdiste_Triunfo_Total();
+							Resultados_Triunfo_Total();
+						//recibe los datos de ingrese nombre
+						}
+	break;
+
+
+
+	case 5:
+Sonido(false,"SonidoFondo1");
+Sonido(true,"SonidoFondo2");
+		Fondo_PosicionesBarras();
+		Posiciones();
+		PosicionesBoton();
+
+
+	break;
+
+default:
+
+
+}
+
+
+
+Reinicio();
+<!-- debut(); -->
+
+
+
+
+
+
+
+requestAnimationFrame(Main);
+
+})();
+
+
+			
+
+  
+  
+  	
+</script>
+
+</HTML>

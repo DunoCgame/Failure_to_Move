@@ -1,0 +1,26 @@
+{
+  "name": "FailuretoMove",
+  "version": "1.0.0",
+  "description": "Game",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+ 
+  "author": "Luis Edgardo Duno Castellano",
+  "license": "copyright",
+  "build": {
+    "appId": "Duno-FailuretoMove",
+    "asar": true,
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "~1.7.8",
+    "electron-builder": "^19.50.0"
+  }
+}
